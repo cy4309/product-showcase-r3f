@@ -19,7 +19,7 @@ export default function Model() {
 
   return (
     <group ref={group}>
-      <primitive object={scene} scale={1.2} />
+      <primitive object={scene} scale={2} />
     </group>
   );
 }
