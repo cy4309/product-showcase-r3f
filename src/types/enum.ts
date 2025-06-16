@@ -33,3 +33,10 @@ export enum ErrorCodes {
   PROMO_CODE_NOT_FOUND = 70001,
   PROMO_CODE_LIMIT_REACHED = 70002,
 }
+
+export type ClipSection = {
+  name: string;
+  start: number;
+  end: number;
+  bgColor: string;
+};

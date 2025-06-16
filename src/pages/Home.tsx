@@ -6,7 +6,7 @@ const Home: React.FC = () => {
     <>
       <div className="w-full h-[100dvh]">
         <Canvas shadows>
-          <color attach="background" args={["#fff"]} />
+          {/* <color attach="background" args={["#fff"]} /> */}
           <Scene />
         </Canvas>
       </div>
