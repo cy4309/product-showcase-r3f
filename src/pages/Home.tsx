@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import Scene from "@/components/Scene";
+import HeroSequence from "@/components/HeroSequence";
 
 const Home: React.FC = () => {
   return (
@@ -9,6 +10,8 @@ const Home: React.FC = () => {
           {/* <color attach="background" args={["#fff"]} /> */}
           <Scene />
         </Canvas>
+
+        <HeroSequence />
       </div>
     </>
   );
