@@ -27,15 +27,15 @@ export default function ScrollText() {
   return (
     <div
       ref={ref}
-      className="absolute top-0 left-0 w-screen h-[300vh] pointer-events-none"
+      className="absolute top-0 left-0 w-screen h-[500dvh] pointer-events-none"
     >
-      <div className="h-screen flex items-center justify-center text-4xl font-bold transition-opacity duration-300">
+      <div className="border h-[100dvh] flex items-center justify-center text-4xl font-bold transition-opacity duration-300">
         開始嚕
       </div>
-      <div className="h-screen flex items-center justify-center text-4xl font-bold transition-opacity duration-300"></div>
-      <div className="h-screen flex items-center justify-center text-4xl font-bold transition-opacity duration-300"></div>
-      <div className="h-screen flex items-center justify-center text-4xl font-bold transition-opacity duration-300"></div>
-      <div className="h-screen flex items-center justify-center text-4xl font-bold transition-opacity duration-300">
+      <div className="border h-[100dvh] flex items-center justify-center text-4xl font-bold transition-opacity duration-300"></div>
+      <div className="border h-[100dvh] flex items-center justify-center text-4xl font-bold transition-opacity duration-300"></div>
+      <div className="border h-[100dvh] flex items-center justify-center text-4xl font-bold transition-opacity duration-300"></div>
+      <div className="border h-[100dvh] flex items-center justify-center text-4xl font-bold transition-opacity duration-300">
         我是皮爸，我很皮嘿嘿
       </div>
     </div>
