@@ -1,11 +1,13 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useGsap } from "@/hooks/useGsap";
-import Section from "@/components/Section";
+import Section from "@/components/Section"; // 共用的 sticky + 300 vh wrapper
+import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas";
 
 const FRAME_COUNT = 65; // 0000‒0064
 
 export default function HeroSequence() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  // const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useResponsiveCanvas();
   const imgPool = useRef<HTMLImageElement[]>([]);
   const [ready, setReady] = useState(false);
   const title1Ref = useRef<HTMLHeadingElement>(null); // AirPods Pro
@@ -122,15 +124,20 @@ export default function HeroSequence() {
         0.8 // 影片開始後不久
       );
 
+      const onResize = () => draw(playhead.frame);
+      window.addEventListener("resize", onResize);
+
       draw(0); // 先畫第一張
 
       return () => {
         tl.kill();
-        window.removeEventListener("resize", setCanvasSize);
+        // window.removeEventListener("resize", setCanvasSize);
+        window.removeEventListener("resize", onResize);
       };
     },
     // @ts-ignore
-    [ready, draw]
+    // [ready, draw]
+    [ready, draw, canvasRef]
   );
 
   return (
