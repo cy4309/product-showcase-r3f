@@ -1,12 +1,10 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useGsap } from "@/hooks/useGsap";
-import Section from "@/components/Section"; // 共用的 sticky + 300 vh wrapper
 import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas";
 
 const FRAME_COUNT = 65; // 0000‒0064
 
 export default function HeroSequence() {
-  // const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRef = useResponsiveCanvas();
   const imgPool = useRef<HTMLImageElement[]>([]);
   const [ready, setReady] = useState(false);
@@ -31,11 +29,11 @@ export default function HeroSequence() {
 
   /* ---------- 2-2. 把某一幀畫到 Canvas ---------- */
   const draw = useCallback((frame: number) => {
-    const canvas = canvasRef.current!;
-    const ctx = canvas.getContext("2d")!;
+    const cvs = canvasRef.current!;
+    const ctx = cvs.getContext("2d")!;
     const img = imgPool.current[frame];
 
-    const { width: vw, height: vh } = canvas;
+    const { width: vw, height: vh } = cvs;
     const scale = Math.max(vw / img.width, vh / img.height);
     const dx = (vw - img.width * scale) / 2;
     const dy = (vh - img.height * scale) / 2;
@@ -48,15 +46,6 @@ export default function HeroSequence() {
   useGsap(
     (gsap) => {
       if (!ready) return () => {};
-
-      // 依螢幕倍率調整解析度
-      const setCanvasSize = () => {
-        const ratio = window.devicePixelRatio || 1;
-        canvasRef.current!.width = window.innerWidth * ratio;
-        canvasRef.current!.height = window.innerHeight * ratio;
-      };
-      setCanvasSize();
-      window.addEventListener("resize", setCanvasSize);
 
       const playhead = { frame: 0 };
       // @ts-ignore
@@ -84,17 +73,17 @@ export default function HeroSequence() {
       tl.to(
         title1Ref.current,
         { opacity: 0, z: -40, duration: 0.2 },
-        0.2 // 時間線進度 40%
+        0.2 // 時間線進度 20%
       ).fromTo(
         title2Ref.current,
         { opacity: 0, z: 40 },
         { opacity: 1, z: 0, duration: 0.2 },
-        0.4 // 稍微重疊，0.45 開始
+        0.4 // 時間線進度 40% 開始
       );
 
       tl.to(
         title2Ref.current, // ① Groundbreaking sound. 淡出
-        { opacity: 0, y: -40, duration: 0.25 },
+        { opacity: 0, z: -40, duration: 0.2 },
         0.7 // 時間線 70 % 開始
       ).fromTo(
         videoRef.current, // ② 影片淡入
@@ -141,23 +130,23 @@ export default function HeroSequence() {
   );
 
   return (
-    <Section id="hero">
+    <>
       {/* Canvas：背景序列 */}
-      <canvas ref={canvasRef} className="w-full h-full" />
+      <canvas ref={canvasRef} />
       {/* 文字層：絕對置中，pointer-events-none 免干擾滑動 */}
-      <div className="-z-10 pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center bg-black text-white">
+      <div className="-z-10 w-full pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center bg-black text-white">
         <h1
           ref={title1Ref}
           className="font-plex text-6xl md:text-9xl font-semibold"
         >
-          AirPods&nbsp;Pro
+          AirPods Pro
         </h1>
 
         <h1
           ref={title2Ref}
           className="font-sans text-6xl md:text-8xl font-semibold tracking-tight opacity-0 absolute"
         >
-          Ground&nbsp;breaking&nbsp;
+          Ground breaking
           <br className="hidden sm:block" />
           sound.
         </h1>
@@ -171,7 +160,6 @@ export default function HeroSequence() {
         muted
         preload="auto"
       />
-
       {/* ----- 文字層：新增 ----- */}
       <div
         ref={linesWrapRef}
@@ -194,6 +182,6 @@ export default function HeroSequence() {
           ))}
         </div>
       </div>
-    </Section>
+    </>
   );
 }
