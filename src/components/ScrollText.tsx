@@ -27,7 +27,7 @@ export default function ScrollText() {
   return (
     <div
       ref={ref}
-      className="absolute inset-0 w-screen h-[500dvh] pointer-events-none"
+      className="fixed inset-0 w-screen h-[500dvh] pointer-events-none"
     >
       <div className="h-[100dvh] flex items-center justify-center text-4xl font-bold transition-opacity duration-300">
         開始嚕

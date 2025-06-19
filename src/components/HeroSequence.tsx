@@ -5,7 +5,7 @@ import { useResponsiveCanvas } from "@/hooks/useResponsiveCanvas";
 const FRAME_COUNT = 65; // 0000‒0064
 
 export default function HeroSequence() {
-  const canvasRef = useResponsiveCanvas();
+  const cvs = useResponsiveCanvas();
   const imgPool = useRef<HTMLImageElement[]>([]);
   const [ready, setReady] = useState(false);
   const title1Ref = useRef<HTMLHeadingElement>(null); // AirPods Pro
@@ -29,18 +29,35 @@ export default function HeroSequence() {
 
   /* ---------- 2-2. 把某一幀畫到 Canvas ---------- */
   const draw = useCallback((frame: number) => {
-    const cvs = canvasRef.current!;
-    const ctx = cvs.getContext("2d")!;
+    // const cvs = canvasRef.current!;
+    const ctx = cvs.current!.getContext("2d")!;
     const img = imgPool.current[frame];
-
-    const { width: vw, height: vh } = cvs;
-    const scale = Math.max(vw / img.width, vh / img.height);
-    const dx = (vw - img.width * scale) / 2;
-    const dy = (vh - img.height * scale) / 2;
-
-    ctx.clearRect(0, 0, vw, vh);
-    ctx.drawImage(img, dx, dy, img.width * scale, img.height * scale);
+    // const { width: vw, height: vh } = cvs.current!;
+    // const scale = Math.max(vw / img.width, vh / img.height);
+    // const dx = (vw - img.width * scale) / 2;
+    // const dy = (vh - img.height * scale) / 2;
+    // ctx.clearRect(0, 0, vw, vh);
+    // ctx.drawImage(img, dx, dy, img.width * scale, img.height * scale);
+    ctx.clearRect(0, 0, cvs.current!.width, cvs.current!.height);
+    ctx.drawImage(img, 0, 0, cvs.current!.width, cvs.current!.height);
   }, []);
+
+  // const draw = useCallback(
+  //   (frame: number) => {
+  //     const ctx = cvs.current!.getContext("2d")!;
+  //     const img = imgPool.current[frame];
+  //     /* 用像素緩衝區大小（width / height）計算比例 */
+  //     const vw = cvs.current!.width; // =>  CSS寬 × DPR
+  //     const vh = cvs.current!.height; // =>  CSS高 × DPR
+  //     // const scale = Math.max(vw / img.width, vh / img.height); // cover 效果
+  //     const scale = Math.max(vw / img.width, vh / img.height) / 2; // cover 效果
+  //     const dx = (vw - img.width * scale) / 2; // 置中
+  //     const dy = (vh - img.height * scale) / 2;
+  //     ctx.clearRect(0, 0, vw, vh);
+  //     ctx.drawImage(img, dx, dy, img.width * scale, img.height * scale);
+  //   },
+  //   [cvs]
+  // );
 
   /* ---------- 2-3. GSAP ScrollTrigger ---------- */
   useGsap(
@@ -51,7 +68,7 @@ export default function HeroSequence() {
       // @ts-ignore
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: canvasRef.current,
+          trigger: cvs.current,
           start: "top top",
           end: `+=${window.innerHeight * 2}`,
           scrub: 0.5, // 慢半拍減少抖動
@@ -125,14 +142,14 @@ export default function HeroSequence() {
       };
     },
     // @ts-ignore
-    // [ready, draw]
-    [ready, draw, canvasRef]
+    [ready, draw, cvs]
   );
 
   return (
     <>
       {/* Canvas：背景序列 */}
-      <canvas ref={canvasRef} />
+      <canvas ref={cvs} />
+
       {/* 文字層：絕對置中，pointer-events-none 免干擾滑動 */}
       <div className="-z-10 w-full pointer-events-none absolute inset-0 flex flex-col items-center justify-center text-center bg-black text-white">
         <h1
@@ -151,6 +168,7 @@ export default function HeroSequence() {
           sound.
         </h1>
       </div>
+
       {/* 影片層：起始透明 */}
       <video
         ref={videoRef}
@@ -160,6 +178,7 @@ export default function HeroSequence() {
         muted
         preload="auto"
       />
+
       {/* ----- 文字層：新增 ----- */}
       <div
         ref={linesWrapRef}

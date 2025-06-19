@@ -1,4 +1,3 @@
-// import { Canvas } from "@react-three/fiber";
 import Scene from "@/components/Scene";
 import HeroSequence from "@/components/HeroSequence";
 import Section from "@/components/Section"; // 共用的 sticky + 300 vh wrapper
@@ -7,10 +6,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Section id="picbot" pin>
-        {/* <Canvas shadows> */}
-        {/* <color attach="background" args={["#fff"]} /> */}
         <Scene />
-        {/* </Canvas> */}
       </Section>
 
       <Section id="text-dom">
@@ -22,7 +18,7 @@ const Home: React.FC = () => {
         </div>
       </Section>
 
-      <Section id="hero">
+      <Section id="hero" pin>
         <HeroSequence />
       </Section>
     </>
