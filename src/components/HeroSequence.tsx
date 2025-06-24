@@ -38,8 +38,23 @@ export default function HeroSequence() {
     // const dy = (vh - img.height * scale) / 2;
     // ctx.clearRect(0, 0, vw, vh);
     // ctx.drawImage(img, dx, dy, img.width * scale, img.height * scale);
+
+    // ctx.clearRect(0, 0, cvs.current!.width, cvs.current!.height);
+    // ctx.drawImage(img, 0, 0, cvs.current!.width, cvs.current!.height);
+
+    /* ① 可視區大小（不含 DPR） */
+    const vw = cvs.current!.clientWidth;
+    const vh = cvs.current!.clientHeight;
+    /* ③ cover 等比縮放 */
+    const scale = Math.max(vw / img.width, vh / img.height);
+    /* ④ 轉成像素緩衝區尺寸再繪製 */
+    const drawW = img.width * scale;
+    const drawH = img.height * scale;
+    const dx = (cvs.current!.width - drawW) / 2; // canvas.width 已 = vw * dpr
+    const dy = (cvs.current!.height - drawH) / 2;
+
     ctx.clearRect(0, 0, cvs.current!.width, cvs.current!.height);
-    ctx.drawImage(img, 0, 0, cvs.current!.width, cvs.current!.height);
+    ctx.drawImage(img, dx, dy, drawW, drawH);
   }, []);
 
   // const draw = useCallback(
@@ -164,7 +179,7 @@ export default function HeroSequence() {
           className="font-sans text-6xl md:text-8xl font-semibold tracking-tight opacity-0 absolute"
         >
           Ground breaking
-          <br className="hidden sm:block" />
+          <br />
           sound.
         </h1>
       </div>

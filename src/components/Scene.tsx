@@ -7,7 +7,7 @@ import { Canvas } from "@react-three/fiber";
 
 export default function Scene() {
   return (
-    <Canvas shadows className="fixed inset-0 !w-screen !h-[100dvh]">
+    <Canvas shadows className="fixed inset-0 !w-full !h-[100dvh]">
       {/* <color attach="background" args={["#fff"]} /> */}
       <ScrollControls
         pages={5}
@@ -15,7 +15,8 @@ export default function Scene() {
         // @ts-ignore
         scrollArea={document.body}
         // style={{
-        //   overflow: "visible",
+        //   // overflow: "visible",
+        //   opacity: 0,
         // }}
       >
         <Scroll>
