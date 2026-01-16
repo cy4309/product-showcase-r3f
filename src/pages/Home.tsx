@@ -14,21 +14,21 @@ import { gsap } from "gsap";
 
 const macbookVariants = [
   {
-    key: "1",
+    key: "2",
     label: "尺寸",
     // title: "14 吋機型",
     desc: "尺寸。 14 吋機型可配備 M5、M4 Pro 或 M4 Max 晶片；16 吋機型可配備 M4 Pro 或 M4 Max 晶片。",
     image: "/assets/mbp-2.jpg",
   },
   {
-    key: "2",
+    key: "3",
     label: "顏色",
     // title: "顏色",
     desc: "顏色。 備有兩款亮眼外觀。現在展示的是銀色 MacBook Pro。",
     image: "/assets/mbp-3.jpg",
   },
   {
-    key: "3",
+    key: "4",
     label: "顯示器",
     // title: "顯示器",
     desc: "顯示器。 明亮出色的 Liquid Retina XDR 顯示器，最高可達 1600 尼特 HDR 峰值亮度與 1,000,000:1 對比度，呈現令人驚豔的視覺效果，暗部黑得深邃，亮部鮮亮搶眼。",
@@ -188,7 +188,7 @@ const Home: React.FC = () => {
 
   const activeBtn =
     "px-5 py-2.5 rounded-full text-sm font-semibold " +
-    "bg-white text-black scale-100 cursor-default";
+    "bg-white text-black scale-100 cursor-default max-w-[250px]";
 
   return (
     <>
@@ -218,7 +218,12 @@ const Home: React.FC = () => {
           <div className="variant-media relative max-w-screen-lg aspect-[4/3] min-h-[640px] overflow-hidden">
             {/* current */}
             <img
-              src={macbookVariants[activeIndex].image}
+              // src={macbookVariants[activeIndex].image}
+              src={
+                uiIndex === null
+                  ? "/assets/mbp-1.jpg"
+                  : macbookVariants[activeIndex].image
+              }
               className="variant-media-current w-full h-full object-contain absolute inset-0 z-10"
               draggable={false}
             />
@@ -270,7 +275,6 @@ const Home: React.FC = () => {
                 ←
               </button>
             )}
-
             {/* 中間 */}
             {uiIndex === null ? (
               // 尚未選擇 → 顯示所有尺寸
@@ -289,7 +293,6 @@ const Home: React.FC = () => {
                 {macbookVariants[uiIndex].desc}
               </button>
             )}
-
             {/* {!isLast && ( */}
             {uiIndex !== null && uiIndex < macbookVariants.length - 1 && (
               <button
