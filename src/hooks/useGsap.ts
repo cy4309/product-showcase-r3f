@@ -4,10 +4,10 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useGsap(cb: (gsap: typeof import("gsap")) => () => void) {
+// @ts-ignore
+export function useGsap(cb: (gsap: typeof gsap) => void, deps: any[] = []) {
   useLayoutEffect(() => {
-    // @ts-ignore
     const ctx = gsap.context(() => cb(gsap));
     return () => ctx.revert(); // 元件卸載時自動 kill
-  }, [cb]);
+  }, deps);
 }
